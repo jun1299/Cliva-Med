@@ -18,13 +18,8 @@ Certainly! Below is a restructured version of the documentation for **Cliva-Med*
 
 🤗 [v1.1](#) | 🤗 [v1.0](#) | 🤗 [v1.0-GGUF](#)
 
-Cliva-Med is a family of lightweight yet powerful multimodal medical models designed for efficient health-related tasks. It offers multiple plug-and-play vision encoders, such as **EVA-CLIP**, **SigLIP**, and advanced language backbones like **Llama-3-8B**, **Phi-3-mini**, **Phi-1.5**, **StableLM-2**, **Qwen1.5**, **MiniCPM**, and **Phi-2**. To optimize performance despite the smaller model sizes, Cliva-Med incorporates more informative training data, carefully curated from diverse and specialized medical sources.
+Cliva-Med is a family of lightweight yet powerful multimodal medical models designed for efficient health-related tasks. It offers multiple plug-and-play vision encoders, = **SigLIP**, and advanced language backbones like ***Phi-1.5**, **StableLM-2**, **Qwen1.5**, and **Phi-2**. To optimize performance despite the smaller model sizes, Cliva-Med incorporates more informative training data, carefully curated from diverse and specialized medical sources.
 
-We proudly present **Cliva-Med-Llama-3-8B-V**, a pioneering vision-language model based on Llama-3, designed specifically for healthcare applications. The **v1.1** version supports high-resolution medical imaging up to **1152x1152**.
-
-![comparison\_8B](comparison_8B.png)
-
-Additionally, the **Cliva-Med-4B** model, built upon **SigLIP** and **Phi-3-mini**, outperforms both smaller and larger medical multimodal models (MLLMs), showcasing significant improvements in medical task performance.
 
 <details>
 <summary>Expand to see the performance of Cliva-Med-4B</summary>
@@ -219,8 +214,5 @@ including image-based clinical data, radiological images, and more.
 
 ## **Contact**
 
-For further inquiries or support, reach out to **[support@clivamed.com](mailto:support@clivamed.com)**.
+For further inquiries, reach out to **junsteffa@gmail.com**.
 
----
-
-This structure mirrors the original Bunny framework documentation and incorporates key details for users implementing **Cliva-Med** models for their own medical tasks. Let me know if you want more additions or edits!

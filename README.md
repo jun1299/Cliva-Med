@@ -1,7 +1,3 @@
-Certainly! Below is a restructured version of the documentation for **Cliva-Med** using the Bunny framework as a template:
-
----
-
 # **Cliva-Med: A Family of Lightweight Medical Multimodal Models**
 
 <p align="center">

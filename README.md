@@ -19,7 +19,7 @@ Cliva-Med is a family of lightweight yet powerful multimodal medical models desi
 
 <details>
 <summary>Expand to see the performance of Cliva-Med-4B</summary>
-<IMG src="comparison_4B.png"/>
+<IMG src="image.png"/>
 </details>
 
 ### Release Notes

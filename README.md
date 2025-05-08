@@ -94,7 +94,7 @@ python run_eval.py --gt ./3vqa/test_rad.json --pred ./radvqa.jsonl --output ./da
 
 - **Stage 1:** Visual-Language Alignment
 - **Stage 2:** Instruction Tuning
-- **Stage 3:** Expert Fine-Tuning (optional)
+
 
 ---
 

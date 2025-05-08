@@ -8,7 +8,7 @@ Cliva-Med is trained in two stages:
 
 It achieves **state-of-the-art or competitive results** on tasks like **medical visual question answering (VQA)** and **image classification**, while using only **30-50% of the parameters** of larger models.
 
-**Paper:** [Cliva-Med: Lightweight Medical Vision-Language Model](https://github.com/jun1299/Cliva-Med)
+
 
 ---
 

@@ -1,79 +1,90 @@
-Cliva-Med: Lightweight Medical Vision-Language Model
+# Cliva-Med: Lightweight Medical Vision-Language Model
 
-Cliva-Med is a lightweight medical vision-language model (VLM) designed for healthcare and biomedical applications. It features a vision encoder, a lightweight large language model backbone, and a cross-modality projector. Cliva-Med is trained through a two-stage process: aligning multimodal medical images with language model tokens, and instruction fine-tuning on medical-specific datasets. Cliva-Med achieves state-of-the-art or competitive results on tasks like closed-ended medical visual question answering (VQA) and image classification — while using only 30-50% of the parameters compared to larger models.
+Cliva-Med is a lightweight medical vision-language model (VLM) designed for healthcare and biomedical applications. It integrates a **vision encoder**, a **lightweight large language model backbone**, and a **cross-modality projector**.
 
-    📄 Paper: Cliva-Med: Lightweight Medical Vision-Language Model
+Cliva-Med is trained in two stages:
+- **Alignment** of multimodal medical images and language tokens
+- **Instruction fine-tuning** on medical-specific datasets
 
-📦 Environment Setup
+It achieves **state-of-the-art or competitive results** on tasks like **medical visual question answering (VQA)** and **image classification**, while using only **30-50% of the parameters** of larger models.
 
-Clone the repository and move into the project directory:
+**Paper:** [Cliva-Med: Lightweight Medical Vision-Language Model](https://github.com/jun1299/Cliva-Med)
 
+---
+
+## 🔧 Installation
+
+```bash
 git clone https://github.com/jun1299/Cliva-Med.git
 cd Cliva-Med
 
-Create and activate the environment:
-
+# Create and activate conda environment
 conda create -n clivamed python=3.10 -y
 conda activate clivamed
+
+# Install dependencies
 pip install --upgrade pip
 pip install -e .
 pip install -e ".[train]"
 pip install flash-attn --no-build-isolation
+```
 
-Replace the default router if needed:
+> 📌 **Note:** Replace the default router if needed by updating the path in:
+```
+clivamed/model/language_model/llava_stablelm_moe.py
+```
 
-    Download the domain-specific router provided or trained by yourself.
+---
 
-    Update its path in clivamed/model/language_model/llava_stablelm_moe.py.
+## 📦 Datasets
 
-📊 Training Datasets
+**Dataset Structure:**
+- Alignment Stage: **LLaVA-Med Alignment Dataset**
+- Instruction Tuning: **LLaVA-Med Instruct Dataset**
 
-Use the LLaVA-Med and Cliva-specific datasets:
-
-    Alignment stage: LLaVA-Med Alignment Dataset
-
-    Instruction Tuning: LLaVA-Med Instruct Dataset
-
-    Image Download:
-
+**Download images:**
+```bash
 wget https://hanoverprod.z21.web.core.windows.net/med_llava/llava_med_image_urls.jsonl
 python download_image.py
+```
 
-Update your paths in config files.
-🚀 Launch Web Interface
+Update the **image and annotation paths** in your config files as needed.
 
-Use DeepSpeed to serve the Gradio interface:
+---
 
-Phi2-based Model
+## 🚀 Web UI Inference (Gradio)
 
+**Phi2-based Model**
+```bash
 deepspeed --include localhost:0 clivamed/serve/gradio_web_server.py --model-path "./ClivaMed-phi2"
+```
 
-StableLM-based Model
-
+**StableLM-based Model**
+```bash
 deepspeed --include localhost:0 clivamed/serve/gradio_web_server.py --model-path "./ClivaMed-stablelm-1.6b"
+```
 
-🔍 Command Line Inference
+---
 
-Phi2-based
+## 💻 Command Line Inference
 
+**Phi2-based**
+```bash
 deepspeed --include localhost:0 clivamed/serve/cli.py --model-path "./ClivaMed-phi2" --image-file "image.jpg"
+```
 
-StableLM-based
-
+**StableLM-based**
+```bash
 deepspeed --include localhost:0 clivamed/serve/cli.py --model-path "./ClivaMed-stablelm-1.6b" --image-file "image.jpg"
+```
 
-🎛️ Model Zoo
+---
 
-    Stage1: Alignment
-
-    Stage2: Instruction-Tuning
-
-    Stage3: Expert Fine-tuning (if applicable)
-
-📈 Evaluation
+## 📊 Evaluation
 
 Example multi-GPU inference and evaluation workflow:
 
+```bash
 CHUNKS=2
 GPUS=(0 1)
 
@@ -90,26 +101,51 @@ for IDX in {0..1}; do
         --chunk-idx $IDX \
         --conv-mode stablelm/phi2 &
 done
+```
 
-# Combine results
+**Combine results:**
+```bash
 cat ./test_cliva-chunk2_{0..1}.jsonl > ./radvqa.jsonl
+```
 
-# Run evaluation
+**Run evaluation:**
+```bash
 python run_eval.py --gt ./3vqa/test_rad.json --pred ./radvqa.jsonl --output ./data_RAD/wrong_answers.json
+```
 
-📚 Citation
+---
 
+## 📁 Model Zoo
+
+- **Stage 1:** Visual-Language Alignment
+- **Stage 2:** Instruction Tuning
+- **Stage 3:** Expert Fine-Tuning (optional)
+
+---
+
+## 📑 Citation
+
+If you find this project helpful, please cite:
+
+```bibtex
 @misc{jiang2024clivamed,
   title={Cliva-Med: Lightweight Medical Vision-Language Model},
   author={Songtao Jiang and Tuo Zheng and Yan Zhang and Yeying Jin and Li Yuan and Zuozhu Liu},
   year={2024},
   note={Available at https://github.com/jun1299/Cliva-Med}
 }
+```
 
-🙏 Acknowledgements
+---
 
-Built upon the foundations of:
+## 🙏 Acknowledgements
 
-    MoE-LLaVA
+Built upon the outstanding works of:
+- [MoE-LLaVA](https://github.com/OpenGVLab/MoE-LLaVA)
+- [LLaVA-Med](https://github.com/OpenGVLab/LLaVA-Med)
 
-    LLaVA-Med
+---
+
+## 📜 License
+
+This project is licensed under the **Apache 2.0 License**.

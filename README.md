@@ -2,11 +2,12 @@
 
 Cliva-Med is a lightweight medical vision-language model (VLM) designed for healthcare and biomedical applications. It integrates a **vision encoder**, a **lightweight large language model backbone**, and a **cross-modality projector**.
 
-Cliva-Med is trained in two stages:
-- **Alignment** of multimodal medical images and language tokens
-- **Instruction fine-tuning** on medical-specific datasets
+Cliva-Med is trained in three-stages:
+- **Alignment** 
+- **Instruction fine-tuning**
+- *Downstreame fine-tuning*
 
-It achieves **state-of-the-art or competitive results** on tasks like **medical visual question answering (VQA)** and **image classification**, while using only **30-50% of the parameters** of larger models.
+Our model achieved **state-of-the-art or competitive results** on tasks like **medical visual question answering (VQA)** and **image classification**, while using only **30-50% of the parameters** of larger models.
 
 
 

@@ -31,9 +31,9 @@ Cliva-Med is a family of lightweight yet powerful multimodal medical models desi
 
 To integrate Cliva-Med models, such as **Cliva-Med-v1.1-Llama-3-8B-V** or **Cliva-Med-v1.1-4B**, with HuggingFace transformers, follow the steps below.
 
-### Prerequisites:
+### Prepare the environment:
 
-Before running the code, you need to install the following dependencies:
+Clone this project.
 
 ```shell
 pip install torch transformers accelerate pillow
@@ -174,6 +174,10 @@ print(response)
 ```
 
 ---
+## **Dataset Preparation:**
+*## **Alignment:**
+*## **Instruction:**
+
 
 ## **Cliva-Med Key Features:**
 
@@ -199,4 +203,6 @@ including image-based clinical data, radiological images, and more.
 ## **Contact**
 
 For further inquiries, reach out to **junsteffa@gmail.com**.
+
+## **Acknoledgement**
 

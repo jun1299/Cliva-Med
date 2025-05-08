@@ -1,208 +1,115 @@
-# **Cliva-Med: A Family of Lightweight Medical Multimodal Models**
+Cliva-Med: Lightweight Medical Vision-Language Model
 
-<p align="center">
-  <img src="./cliva-med-icon.png" alt="Cliva-Med Logo" width="350">
-</p>
+Cliva-Med is a lightweight medical vision-language model (VLM) designed for healthcare and biomedical applications. It features a vision encoder, a lightweight large language model backbone, and a cross-modality projector. Cliva-Med is trained through a two-stage process: aligning multimodal medical images with language model tokens, and instruction fine-tuning on medical-specific datasets. Cliva-Med achieves state-of-the-art or competitive results on tasks like closed-ended medical visual question answering (VQA) and image classification — while using only 30-50% of the parameters compared to larger models.
 
-📖 [Technical report](#) | 🤗 [Data](#) | 🤖 [Data](#) | 🤗 [HFSpace](#) 🩺 [Demo](#)
+    📄 Paper: Cliva-Med: Lightweight Medical Vision-Language Model
 
-## **Cliva-Med-Llama-3-8B-V**:
+📦 Environment Setup
 
-🤗 [v1.1](#) | 🤗 [v1.0](#) | 🤗 [v1.0-GGUF](#)
+Clone the repository and move into the project directory:
 
-## **Cliva-Med-4B**:
+git clone https://github.com/jun1299/Cliva-Med.git
+cd Cliva-Med
 
-🤗 [v1.1](#) | 🤗 [v1.0](#) | 🤗 [v1.0-GGUF](#)
+Create and activate the environment:
 
-Cliva-Med is a family of lightweight yet powerful multimodal medical models designed for efficient health-related tasks. It offers multiple plug-and-play vision encoders, = **SigLIP**, and advanced language backbones like ***Phi-1.5**, **StableLM-2**, **Qwen1.5**, and **Phi-2**. To optimize performance despite the smaller model sizes, Cliva-Med incorporates more informative training data, carefully curated from diverse and specialized medical sources.
+conda create -n clivamed python=3.10 -y
+conda activate clivamed
+pip install --upgrade pip
+pip install -e .
+pip install -e ".[train]"
+pip install flash-attn --no-build-isolation
 
+Replace the default router if needed:
 
-<details>
-<summary>Expand to see the performance of Cliva-Med-4B</summary>
-<IMG src="image.png"/>
-</details>
+    Download the domain-specific router provided or trained by yourself.
 
+    Update its path in clivamed/model/language_model/llava_stablelm_moe.py.
 
----
+📊 Training Datasets
 
-## **Quickstart Guide**
+Use the LLaVA-Med and Cliva-specific datasets:
 
-### Using Cliva-Med Models with HuggingFace Transformers
+    Alignment stage: LLaVA-Med Alignment Dataset
 
-To integrate Cliva-Med models, such as **Cliva-Med-v1.1-Llama-3-8B-V** or **Cliva-Med-v1.1-4B**, with HuggingFace transformers, follow the steps below.
+    Instruction Tuning: LLaVA-Med Instruct Dataset
 
-### Prepare the environment:
+    Image Download:
 
-Clone this project.
+wget https://hanoverprod.z21.web.core.windows.net/med_llava/llava_med_image_urls.jsonl
+python download_image.py
 
-```shell
-pip install torch transformers accelerate pillow
-```
+Update your paths in config files.
+🚀 Launch Web Interface
 
-If your system has sufficient CUDA memory, setting `CUDA_VISIBLE_DEVICES=0` can speed up execution.
+Use DeepSpeed to serve the Gradio interface:
 
-### Code Example for HuggingFace Transformers
+Phi2-based Model
 
-```python
-import torch
-import transformers
-from transformers import AutoModelForCausalLM, AutoTokenizer
-from PIL import Image
-import warnings
+deepspeed --include localhost:0 clivamed/serve/gradio_web_server.py --model-path "./ClivaMed-phi2"
 
-# disable some warnings
-transformers.logging.set_verbosity_error()
-transformers.logging.disable_progress_bar()
-warnings.filterwarnings('ignore')
+StableLM-based Model
 
-# set device
-device = 'cuda'  # or cpu
-torch.set_default_device(device)
+deepspeed --include localhost:0 clivamed/serve/gradio_web_server.py --model-path "./ClivaMed-stablelm-1.6b"
 
-# Load Cliva-Med model and tokenizer
-model_name = 'BAAI/Cliva-Med-v1_1-Llama-3-8B-V' # or 'BAAI/Cliva-Med-v1_1-4B'
-offset_bos = 1  # Adjust for different models
+🔍 Command Line Inference
 
-# Load the model
-model = AutoModelForCausalLM.from_pretrained(
-    model_name,
-    torch_dtype=torch.float16,  # Use float32 for CPU
-    device_map='auto',
-    trust_remote_code=True
-)
+Phi2-based
 
-# Load tokenizer
-tokenizer = AutoTokenizer.from_pretrained(
-    model_name,
-    trust_remote_code=True
-)
+deepspeed --include localhost:0 clivamed/serve/cli.py --model-path "./ClivaMed-phi2" --image-file "image.jpg"
 
-# Define the text prompt
-prompt = 'What are the common symptoms of liver disease?'
+StableLM-based
 
-# Define input text with an image placeholder
-text = f"A conversation between a user and an AI assistant. The assistant provides detailed and accurate answers to medical inquiries. USER: <image>\n{prompt} ASSISTANT:"
+deepspeed --include localhost:0 clivamed/serve/cli.py --model-path "./ClivaMed-stablelm-1.6b" --image-file "image.jpg"
 
-# Tokenize the input text
-text_chunks = [tokenizer(chunk).input_ids for chunk in text.split('<image>')]
-input_ids = torch.tensor(text_chunks[0] + [-200] + text_chunks[1][offset_bos:], dtype=torch.long).unsqueeze(0).to(device)
+🎛️ Model Zoo
 
-# Load and preprocess the medical image (example)
-image = Image.open('example_medical_image.png')
-image_tensor = model.process_images([image], model.config).to(dtype=model.dtype, device=device)
+    Stage1: Alignment
 
-# Generate response
-output_ids = model.generate(
-    input_ids,
-    images=image_tensor,
-    max_new_tokens=100,
-    use_cache=True,
-    repetition_penalty=1.0  # Adjust to avoid excessive repetition
-)[0]
+    Stage2: Instruction-Tuning
 
-# Decode and print the model's response
-response = tokenizer.decode(output_ids[input_ids.shape[1]:], skip_special_tokens=True).strip()
-print(response)
-```
+    Stage3: Expert Fine-tuning (if applicable)
 
----
+📈 Evaluation
 
-### ModelScope Integration
+Example multi-GPU inference and evaluation workflow:
 
-Users in China can also use **ModelScope** for a more localized experience. Here's how you can integrate Cliva-Med with ModelScope:
+CHUNKS=2
+GPUS=(0 1)
 
-```python
-import torch
-import transformers
-from modelscope import AutoTokenizer, AutoModelForCausalLM
-from modelscope.hub.snapshot_download import snapshot_download
-from PIL import Image
-import warnings
+for IDX in {0..1}; do
+    GPU_IDX=${GPUS[$IDX]}
+    PORT=$((${GPUS[$IDX]} + 29500))
+    deepspeed --include localhost:$GPU_IDX --master_port $PORT model_vqa_med.py \
+        --model-path your_model_path \
+        --question-file ./test_rad.json \
+        --image-folder ./3vqa/images \
+        --answers-file ./test_cliva-chunk${CHUNKS}_${IDX}.jsonl \
+        --temperature 0 \
+        --num-chunks $CHUNKS \
+        --chunk-idx $IDX \
+        --conv-mode stablelm/phi2 &
+done
 
-# disable some warnings
-transformers.logging.set_verbosity_error()
-transformers.logging.disable_progress_bar()
-warnings.filterwarnings('ignore')
+# Combine results
+cat ./test_cliva-chunk2_{0..1}.jsonl > ./radvqa.jsonl
 
-# Set device for model execution
-device = 'cuda'  # or cpu
-torch.set_default_device(device)
+# Run evaluation
+python run_eval.py --gt ./3vqa/test_rad.json --pred ./radvqa.jsonl --output ./data_RAD/wrong_answers.json
 
-# Model name and configuration
-model_name = 'BAAI/Cliva-Med-v1_1-Llama-3-8B-V'
-offset_bos = 1
+📚 Citation
 
-# Load model
-snapshot_download(model_id='cliva-model/siglip-medical-v1')
-model = AutoModelForCausalLM.from_pretrained(
-    model_name,
-    torch_dtype=torch.float16,  # Use float32 for CPU
-    device_map='auto',
-    trust_remote_code=True
-)
+@misc{jiang2024clivamed,
+  title={Cliva-Med: Lightweight Medical Vision-Language Model},
+  author={Songtao Jiang and Tuo Zheng and Yan Zhang and Yeying Jin and Li Yuan and Zuozhu Liu},
+  year={2024},
+  note={Available at https://github.com/jun1299/Cliva-Med}
+}
 
-# Load tokenizer
-tokenizer = AutoTokenizer.from_pretrained(
-    model_name,
-    trust_remote_code=True
-)
+🙏 Acknowledgements
 
-# Example text prompt
-prompt = "What is the latest treatment for liver cancer?"
+Built upon the foundations of:
 
-# Define and process the input text
-text = f"A medical consultation between a user and an AI assistant. The assistant offers evidence-based, detailed medical insights. USER: <image>\n{prompt} ASSISTANT:"
-text_chunks = [tokenizer(chunk).input_ids for chunk in text.split('<image>')]
-input_ids = torch.tensor(text_chunks[0] + [-200] + text_chunks[1][offset_bos:], dtype=torch.long).unsqueeze(0).to(device)
+    MoE-LLaVA
 
-# Example medical image
-image = Image.open('example_medical_image.png')
-image_tensor = model.process_images([image], model.config).to(dtype=model.dtype, device=device)
-
-# Generate the response
-output_ids = model.generate(
-    input_ids,
-    images=image_tensor,
-    max_new_tokens=100,
-    use_cache=True,
-    repetition_penalty=1.0
-)[0]
-
-# Decode and print the result
-response = tokenizer.decode(output_ids[input_ids.shape[1]:], skip_special_tokens=True).strip()
-print(response)
-```
-
----
-## **Dataset Preparation:**
-*## **Alignment:**
-*## **Instruction:**
-
-
-## **Cliva-Med Key Features:**
-
-* **Lightweight and Efficient**: Optimized for medical image and text processing with a focus on small model sizes while maintaining high performance.
-* **Multimodal Support**: Includes both vision and language processing capabilities, making it perfect for medical tasks requiring both visual and textual inputs.
-* **High-Resolution Image Support**: Supports high-resolution medical images up to **1152x1152**, enabling detailed analysis.
-* **Pre-trained on Medical Datasets**: Trained on diverse medical datasets,
-
-
-including image-based clinical data, radiological images, and more.
-
-* **Optimized for Healthcare Tasks**: Whether it's generating clinical insights, assisting in diagnosis, or answering medical questions, Cliva-Med excels in healthcare applications.
-
----
-
-## **Usage Notes:**
-
-* **Fine-Tuning**: Users can fine-tune **Cliva-Med** on their specific medical data using the provided scripts for further customization.
-* **Performance Optimizations**: Cliva-Med supports GPU-based acceleration for efficient execution.
-
----
-
-## **Contact**
-
-For further inquiries, reach out to **junsteffa@gmail.com**.
-
-## **Acknoledgement**
-
+    LLaVA-Med

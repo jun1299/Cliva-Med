@@ -97,20 +97,7 @@ python run_eval.py --gt ./3vqa/test_rad.json --pred ./radvqa.jsonl --output ./da
 
 ---
 
-## 📑 Citation
 
-If you find this project helpful, please cite:
-
-```bibtex
-@misc{jiang2024clivamed,
-  title={Cliva-Med: Lightweight Medical Vision-Language Model},
-  author={Songtao Jiang and Tuo Zheng and Yan Zhang and Yeying Jin and Li Yuan and Zuozhu Liu},
-  year={2024},
-  note={Available at https://github.com/jun1299/Cliva-Med}
-}
-```
-
----
 
 ## 🙏 Acknowledgements
 

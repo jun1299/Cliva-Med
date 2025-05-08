@@ -28,11 +28,6 @@ pip install -e .
 
 ```
 
-> 📌 **Note:** Replace the default router if needed by updating the path in:
-```
-clivamed/model/language_model/llava_stablelm_moe.py
-```
-
 ---
 
 ## 📦 Datasets

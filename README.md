@@ -82,16 +82,6 @@ cat ./test_cliva-chunk2_{0..1}.jsonl > ./radvqa.jsonl
 python run_eval.py --gt ./3vqa/test_rad.json --pred ./radvqa.jsonl --output ./data_RAD/wrong_answers.json
 ```
 
----
-
-## 📁 Model Zoo
-
-- **Stage 1:** Visual-Language Alignment
-- **Stage 2:** Instruction Tuning
-
-
----
-
 
 
 ## 🙏 Acknowledgements

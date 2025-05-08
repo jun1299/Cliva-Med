@@ -39,46 +39,21 @@ clivamed/model/language_model/llava_stablelm_moe.py
 ## 📦 Datasets
 
 **Dataset Structure:**
-- Alignment Stage: **LLaVA-Med Alignment Dataset**
+- Alignment Stage: **PMC-VQA custom Alignment Dataset**
 - Instruction Tuning: **LLaVA-Med Instruct Dataset**
+**PMC-VQA custom Alignment Dataset**
+  **Download images:**
+```bash
+  https://huggingface.co/datasets/RadGenome/PMC-VQA
+```
 
+**LLaVA-Med Instruct Dataset**
 **Download images:**
 ```bash
 wget https://hanoverprod.z21.web.core.windows.net/med_llava/llava_med_image_urls.jsonl
 python download_image.py
 ```
 
-Update the **image and annotation paths** in your config files as needed.
-
----
-
-## 🚀 Web UI Inference (Gradio)
-
-**Phi2-based Model**
-```bash
-deepspeed --include localhost:0 clivamed/serve/gradio_web_server.py --model-path "./ClivaMed-phi2"
-```
-
-**StableLM-based Model**
-```bash
-deepspeed --include localhost:0 clivamed/serve/gradio_web_server.py --model-path "./ClivaMed-stablelm-1.6b"
-```
-
----
-
-## 💻 Command Line Inference
-
-**Phi2-based**
-```bash
-deepspeed --include localhost:0 clivamed/serve/cli.py --model-path "./ClivaMed-phi2" --image-file "image.jpg"
-```
-
-**StableLM-based**
-```bash
-deepspeed --include localhost:0 clivamed/serve/cli.py --model-path "./ClivaMed-stablelm-1.6b" --image-file "image.jpg"
-```
-
----
 
 ## 📊 Evaluation
 
@@ -141,7 +116,7 @@ If you find this project helpful, please cite:
 ## 🙏 Acknowledgements
 
 Built upon the outstanding works of:
-- [MoE-LLaVA](https://github.com/OpenGVLab/MoE-LLaVA)
+- [Bunny-VLM](https://github.com/BAAI-DCAI/Bunny)
 - [LLaVA-Med](https://github.com/OpenGVLab/LLaVA-Med)
 
 ---

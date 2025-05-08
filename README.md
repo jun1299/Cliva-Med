@@ -22,18 +22,6 @@ Cliva-Med is a family of lightweight yet powerful multimodal medical models desi
 <IMG src="image.png"/>
 </details>
 
-### Release Notes
-
-* **2024.05.08**: **Cliva-Med-v1.1-4B**, supporting 1152x1152 resolution, is released! It leverages **SigLIP** and **Phi-3-Mini-4K 3.8B** with an **S\$`^2`\$-Wrapper**. Check more details on [HuggingFace](#) and [Demo](#).
-* **2024.05.01**: **Cliva-Med-v1.0-4B**, a vision-language model based on **Phi-3**, is released! Explore more on [HuggingFace](#) and [GGUF](#).
-* **2024.04.21**: **Cliva-Med-Llama-3-8B-V**, the first vision-language model based on **Llama-3**, is released! Check more details on [HuggingFace](#) and [ModelScope](#).
-* **2024.04.18**: **Cliva-Med-v1.0-3B-zh**, optimized for Chinese-English medical tasks, is released! Visit [HuggingFace](#) and [ModelScope](#) for more information.
-* **2024.03.15**: **Cliva-Med-v1.0-2B-zh**, focused on Chinese medical content, is now available! Visit [HuggingFace](#) and [ModelScope](#).
-
-### **Cliva-Med Training Data**
-
-* Released: **2024.03.06**
-  Check more details about **Cliva-Med v1.0-data** on [HuggingFace](#) and [ModelScope](#).
 
 ---
 

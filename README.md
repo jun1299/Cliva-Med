@@ -5,7 +5,7 @@ Cliva-Med is a lightweight medical vision-language model (VLM) designed for heal
 Cliva-Med is trained in three-stages:
 - **Alignment** 
 - **Instruction fine-tuning**
-- *Downstreame fine-tuning*
+- **Downstream fine-tuning**
 
 Our model achieved **state-of-the-art or competitive results** on tasks like **medical visual question answering (VQA)** and **image classification**, while using only **30-50% of the parameters** of larger models.
 

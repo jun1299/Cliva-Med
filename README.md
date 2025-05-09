@@ -1,15 +1,14 @@
+
 # Cliva-Med: Lightweight Medical Vision-Language Model
 
 Cliva-Med is a lightweight medical vision-language model (VLM) designed for healthcare and biomedical applications. It integrates a **vision encoder**, a **lightweight large language model backbone**, and a **cross-modality projector**.
 
-Cliva-Med is trained in three-stages:
-- **Alignment** 
+Cliva-Med is trained in three stages:
+- **Alignment**
 - **Instruction fine-tuning**
 - **Downstream fine-tuning**
 
-Our model achieved **state-of-the-art or competitive results** on tasks like **medical visual question answering (VQA)** and **image classification**, while using only **30-50% of the parameters** of larger models.
-
-
+Our model achieves **state-of-the-art or competitive results** on tasks like **medical visual question answering (VQA)** and **image classification**, while using only **30-50% of the parameters** of larger models.
 
 ---
 
@@ -26,38 +25,41 @@ conda activate clivamed
 # Install dependencies
 pip install --upgrade pip
 pip install -e .
-
 ```
 
 ---
 
 ## 📦 Datasets
 
-**Dataset Structure:**
-- Alignment Stage: **PMC-VQA custom Alignment Dataset**
-- Instruction Tuning: **LLaVA-Med Instruct Dataset**
-  
+### Dataset Structure:
+- **Alignment Stage:** `PMC-VQA custom Alignment Dataset`
+- **Instruction Tuning:** `LLaVA-Med Instruct Dataset`
+
+---
+
+### 📥 Download Datasets
+
 **PMC-VQA custom Alignment Dataset**
--Download images:
 ```bash
-  https://huggingface.co/datasets/RadGenome/PMC-VQA
+https://huggingface.co/datasets/RadGenome/PMC-VQA
 ```
--Formatting the dataset:
+
+**Format the dataset**
 ```bash
-  py formatting_dataset.py
+python formatting_dataset.py
 ```
 
 **LLaVA-Med Instruct Dataset**
--Download images:
 ```bash
 wget https://hanoverprod.z21.web.core.windows.net/med_llava/llava_med_image_urls.jsonl
 python download_image.py
 ```
 
+---
 
 ## 📊 Evaluation
 
-Example multi-GPU inference and evaluation workflow:
+### Example Multi-GPU Inference & Evaluation Workflow:
 
 ```bash
 CHUNKS=2
@@ -66,6 +68,7 @@ GPUS=(0 1)
 for IDX in {0..1}; do
     GPU_IDX=${GPUS[$IDX]}
     PORT=$((${GPUS[$IDX]} + 29500))
+
     deepspeed --include localhost:$GPU_IDX --master_port $PORT model_vqa_med.py \
         --model-path your_model_path \
         --question-file ./test_rad.json \
@@ -78,17 +81,19 @@ for IDX in {0..1}; do
 done
 ```
 
-**Combine results:**
+### Combine Results:
+
 ```bash
 cat ./test_cliva-chunk2_{0..1}.jsonl > ./radvqa.jsonl
 ```
 
-**Run evaluation:**
+### Run Evaluation:
+
 ```bash
 python run_eval.py --gt ./3vqa/test_rad.json --pred ./radvqa.jsonl --output ./data_RAD/wrong_answers.json
 ```
 
-
+---
 
 ## 🙏 Acknowledgements
 

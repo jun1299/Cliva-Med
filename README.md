@@ -36,14 +36,19 @@ pip install -e .
 **Dataset Structure:**
 - Alignment Stage: **PMC-VQA custom Alignment Dataset**
 - Instruction Tuning: **LLaVA-Med Instruct Dataset**
+  
 **PMC-VQA custom Alignment Dataset**
-  **Download images:**
+  Download images:
 ```bash
   https://huggingface.co/datasets/RadGenome/PMC-VQA
 ```
+  Formatting the dataset:
+```bash
+  py formatting_dataset.py
+```
 
 **LLaVA-Med Instruct Dataset**
-**Download images:**
+  Download images:
 ```bash
 wget https://hanoverprod.z21.web.core.windows.net/med_llava/llava_med_image_urls.jsonl
 python download_image.py

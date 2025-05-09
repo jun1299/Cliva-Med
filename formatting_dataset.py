@@ -2,7 +2,7 @@ import csv
 import json
 
 # Input and output paths
-csv_file_path = 'your_input_file.csv'
+csv_file_path = 'train.csv'
 output_jsonl_path = 'llava_formatted_dataset.jsonl'
 
 # Read CSV and convert to LLaVA format
